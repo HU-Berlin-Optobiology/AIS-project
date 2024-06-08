@@ -415,9 +415,9 @@ def particle_detect_batch ():
             
             det_coloc[f]={'co_C1': perc_coloc_c1,
                           'co_C2': perc_coloc_c2,
-                          'distance':  aver_distance
-                          'Nr_par_c1': nu_det_rois_c1
-                          'Nr_par_c2': nu_det_rois_c2
+                          'distance':  aver_distance,
+                          'Nr_par_c1': nu_det_rois_c1,
+                          'Nr_par_c2': nu_det_rois_c2,
                           'Nr_par_colocl': coloc_par
             }
 
