@@ -441,6 +441,8 @@ def particle_detect_batch ():
         rt_out.addValue("Ave_dis (pixels)", det_coloc[ID]['distance'])        
     
     rt_out.show("output")
+    result_table_path_final = os.path.join(results_save_folder, "Final_results" + ".csv")
+    rt_out.saveAs(result_table_path_final)
     IJ.log("")
     IJ.log("Done!")
             
