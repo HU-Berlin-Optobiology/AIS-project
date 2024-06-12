@@ -33,6 +33,11 @@ gd.addDirectoryField("Select ROI folder:", "")
 gd.addDirectoryField("Select folder to save detected ROIs:", "")
 gd.addDirectoryField("Select folder to save results table:", "")
 gd.addDirectoryField("Select folder to save log file:", "")
+
+gd.addMessage("Specify channels for detection:")
+gd.addNumericField("first channel:", 1, 0) # set minimum particle size
+gd.addNumericField("second channel:", 2,0) # set maximum particle size
+
 gd.addMessage("Set detection thresholds:")
 gd.addMessage("Channel_01:")
 gd.addNumericField("Minimum particle size (pixels):", 0.0, 2) # set minimum particle size
@@ -64,6 +69,11 @@ roi_folder = gd.getNextString()
 roi_save_folder = gd.getNextString()
 results_save_folder = gd.getNextString()
 log_folder = gd.getNextString()
+
+## specify channels 
+ch1_d=gd.getNextNumber()
+ch2_d=gd.getNextNumber()
+
 ## get input for channel_01
 min_size_c1 = gd.getNextNumber()
 max_size_c1 = gd.getNextNumber()
@@ -223,7 +233,7 @@ def particle_detect_batch ():
             image_p=IJ.getImage() ## get front image
             image_idx=image_p.getTitle()
             duplicator=Duplicator()  ##activate duplicator          
-            dup_im=duplicator.run(image_p, 3, 4) # duplicate channel 3 and 4 from the stack image (convert to user input)
+            dup_im=duplicator.run(image_p, ch1_d, ch2_d) # duplicate channel 3 and 4 from the stack image (convert to user input)
             dup_im.setTitle("gephyrin_vgat") # name the duplicated image (convert to user input)
             dup_im.show() # show the duplicated stack
             
