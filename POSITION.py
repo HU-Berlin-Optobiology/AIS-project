@@ -219,6 +219,7 @@ def particle_detect_batch ():
             result_table_path_c1 = os.path.join(results_save_folder, f_1 + ".csv")
             roi_save_path_c2 = os.path.join(roi_save_folder, f_2 + ".zip")
             result_table_path_c2 = os.path.join(results_save_folder, f_2 + ".csv")
+            plot_save_path= os.path.join(results_save_folder, str(f) + ".jpg")
             
             ## set corresponding roi name. Note!!! the name of the ROI file should be the same as images
             roi_name = os.path.splitext(f)[0] + ".roi"
@@ -233,7 +234,7 @@ def particle_detect_batch ():
             image_p=IJ.getImage() ## get front image
             image_idx=image_p.getTitle()
             duplicator=Duplicator()  ##activate duplicator          
-            dup_im=duplicator.run(image_p, ch1_d, ch2_d) # duplicate channel 3 and 4 from the stack image (convert to user input)
+            dup_im=duplicator.run(image_p, int(ch1_d), int(ch2_d)) # duplicate channel 3 and 4 from the stack image (convert to user input)
             dup_im.setTitle("gephyrin_vgat") # name the duplicated image (convert to user input)
             dup_im.show() # show the duplicated stack
             
@@ -412,7 +413,8 @@ def particle_detect_batch ():
             plot.setColor("red")  # Set color to red
             plot.addPoints(x_coords_c2, y_coords_c2, Plot.CIRCLE)
             
-            coloc_par=0 # set a variable for counting colocalised particles
+            coloc_par=0 # set a variable for counting colocalised particles in ch1
+            coloc_par_c2=0 # set a variable for counting colocalised particles in ch2
             co_dis=[] # creat an empty list to store distance between co-localised particles 
             perc_coloc_c1=0
             perc_coloc_c2=0
@@ -431,13 +433,34 @@ def particle_detect_batch ():
                     co_dis.append(min_distance) # store distance between co-localised particles
                     coloc_par+=1 # count number of co-localised particles
                     plot.setColor("black")  # Set color to black for close points
-                    plot.addPoints([x_coords_c1[i]], [y_coords_c1[i]], Plot.CIRCLE)
-                    plot.addPoints([x_coords_c2[min_j]], [y_coords_c2[min_j]], Plot.CIRCLE)
+                    plot.addPoints([x_coords_c1[i]], [y_coords_c1[i]], Plot.DIAMOND)
+                    #plot.addPoints([x_coords_c2[min_j]], [y_coords_c2[min_j]], Plot.CIRCLE)
+            
+            # Find the nearest neighbor for each point in Channel 2 from the points in Channel 1
+            for i in range(len(x_coords_c2)):
+                min_distance2 = float('inf')
+                min_j2 = -1
+                for j in range(len(x_coords_c1)):
+                    distance2 = math.sqrt((x_coords_c2[i] - x_coords_c1[j])**2 + (y_coords_c2[i] - y_coords_c1[j])**2)
+                    if distance2 < min_distance2:
+                        min_distance2 = distance2
+                        min_j2 = j
+    
+                if min_distance2 <= co_threshold:
+                    coloc_par_c2+=1 # count number of co-localised particles
+                    plot.setColor("black")  # Set color to black for close points
+                    plot.addPoints([x_coords_c2[i]], [y_coords_c2[i]], Plot.DIAMOND)
+            
+            
             # Display the plot
             plot.show()
+            co_p=plot.getImagePlus()
+            IJ.save(co_p,plot_save_path)
+            
+            
             
             perc_coloc_c1 = (float(coloc_par)/float(nu_det_rois_c1))*100 #calculate percentage of co-localised particles in channel 1 
-            perc_coloc_c2 = (float(coloc_par)/float(nu_det_rois_c2))*100 #calculate percentage of co-localised particles in channel 2
+            perc_coloc_c2 = (float(coloc_par_c2)/float(nu_det_rois_c2))*100 #calculate percentage of co-localised particles in channel 2
             aver_distance = sum(co_dis)/len(co_dis) #calculate average distance between co-localised particles
 
             ## store co-localisation info of current image into a dictionary ##
@@ -447,7 +470,8 @@ def particle_detect_batch ():
                           'distance':  aver_distance,
                           'Nr_par_c1': nu_det_rois_c1,
                           'Nr_par_c2': nu_det_rois_c2,
-                          'Nr_par_colocl': coloc_par
+                          'Nr_par_colocl_C1': coloc_par,
+                          'Nr_par_colocl_C2': coloc_par_c2
             }
 
             IJ.log("=== current image finished! ===")
@@ -464,7 +488,8 @@ def particle_detect_batch ():
         rt_out.addValue("Image_ID", ID)
         rt_out.addValue("Nr par in Ch1", det_coloc[ID]['Nr_par_c1'])
         rt_out.addValue("Nr par in Ch2", det_coloc[ID]['Nr_par_c2'])
-        rt_out.addValue("Nr colocal par", det_coloc[ID]['Nr_par_colocl'])
+        rt_out.addValue("Nr colocal par_C1", det_coloc[ID]['Nr_par_colocl_C1'])
+        rt_out.addValue("Nr colocal par_C2", det_coloc[ID]['Nr_par_colocl_C2'])
         rt_out.addValue("co-localisation % in Ch1", det_coloc[ID]['co_C1'])
         rt_out.addValue("co-localisation % in Ch2", det_coloc[ID]['co_C2'])
         rt_out.addValue("Ave_dis (pixels)", det_coloc[ID]['distance'])        
