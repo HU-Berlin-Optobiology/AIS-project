@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Oct  3 15:59:35 2023
-
+## Update: This is the latest version of AIS_pack. some naming issues are fixed
 @author: yuhao
 """
 
