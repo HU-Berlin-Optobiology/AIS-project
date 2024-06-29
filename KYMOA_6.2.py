@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+## update: some bugs for data saving are corrected 
+
 # In[3]:
 
 ########## User input for file directories
