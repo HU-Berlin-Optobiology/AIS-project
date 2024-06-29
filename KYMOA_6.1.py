@@ -4,9 +4,9 @@
 # In[3]:
 
 ########## User input for file directories
-figure_save=""
-output_save=""
-file_directory=""
+figure_save=r""
+output_save=r""
+file_directory=r""
 ########## User input for imaging settings
 pixel_size=0.13    #pixel size of the microscope (micro)
 frame=0.2          #time for time laps  (s)
@@ -33,9 +33,9 @@ import numpy as np
 import pandas as pd
 from itertools import zip_longest
 
-save_fig=r"figure_save"           # type in where u wanna save the figures
-save_exe=r"output_save"   # type in where to save the final excel sheet
-dir=r"file_directory"  # directory to find your csv files
+save_fig=figure_save           # type in where u wanna save the figures
+save_exe=output_save   # type in where to save the final excel sheet
+dir=file_directory  # directory to find your csv files
 os.chdir(dir)
 nu_files=0     #cunt how many files are processed
 kymo_ana={}    #store all track information
