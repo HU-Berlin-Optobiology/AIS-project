@@ -22,7 +22,10 @@ exp_name="20230228"  # name of your experiment
 Objective="100x"
 
 # In[ ]:
+################################### actual codes start here. do not modify! ###################################
 
+pip install pandas # install pandas
+pip install openpyxl
 
 import os
 import csv
