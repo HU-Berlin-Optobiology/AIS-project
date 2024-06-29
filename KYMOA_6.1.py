@@ -4,9 +4,9 @@
 # In[3]:
 
 ########## User input for file directories
-figure_save=r""
-output_save=r""
-file_directory=r""
+figure_save=r"" # type in the directory you want to save the final plot (e.g. r"c/s/c")
+output_save=r"" # type in the directory you want to save the final output as excel sheet
+file_directory=r"" # type in the directory where your tracks are
 ########## User input for imaging settings
 pixel_size=0.13    #pixel size of the microscope (micro)
 frame=0.2          #time for time laps  (s)
@@ -780,8 +780,8 @@ for sh_n, sh_data in kymo_ana.items():    #d_n is name of directory, di is the s
     df=pd.DataFrame.from_dict(sh_data, orient='index')
     df.to_excel(writer, sheet_name=sh_n)
     #writer.book.create_sheet(sh_n[-4:-1])
-writer.save()   
-writer.close()
+#writer.save()   
+#writer.close()
 
 
 
