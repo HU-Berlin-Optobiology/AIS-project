@@ -233,6 +233,10 @@ def particle_detect_batch ():
             
             image_p=IJ.getImage() ## get front image
             image_idx=image_p.getTitle()
+            width = image_p.getWidth()
+            height = image_p.getHeight()
+
+            
             duplicator=Duplicator()  ##activate duplicator          
             dup_im=duplicator.run(image_p, int(ch1_d), int(ch2_d)) # duplicate channel 3 and 4 from the stack image (convert to user input)
             dup_im.setTitle("gephyrin_vgat") # name the duplicated image (convert to user input)
