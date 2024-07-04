@@ -27,7 +27,7 @@ def calc_pause_permin(group):
 label=0
 writer=pd.ExcelWriter(r".xlsx", engine='openpyxl')
 
-file_dir=r""
+file_dir=r"" # input your excel file directory
 os.chdir(file_dir)
 efile_list = os.listdir(file_dir)
 #kymo_e="20211006kymo_ana.xlsx"
