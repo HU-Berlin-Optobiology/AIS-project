@@ -572,7 +572,8 @@ for rs in f_roots:               #loop each directory in f_roots that contains t
                         pas_len=math.sqrt(dcwx**2+dcwy**2)
                         passive_dur+=dcwy*frame
                         passive_dis+=pas_len*pixel_size
-                        passive_vel+=passive_dis/passive_dur
+                        if not passive_dur = 0:
+                            passive_vel+=passive_dis/passive_dur
                 
                 #print("passive movement duration (sec):", passive_dur)
                 #print("passive movement distance (um):", passive_dis)
